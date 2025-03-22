@@ -36,15 +36,51 @@ export function extractFrontmatter(content: string) {
   
   const frontmatterString = match[1];
   const remainingContent = content.replace(frontmatterRegex, '').trim();
-  const frontmatter: Record<string, string> = {};
+  const frontmatter: Record<string, any> = {};
   
   // Parse frontmatter
-  frontmatterString.split('\n').forEach(line => {
-    const [key, ...valueArr] = line.split(':');
-    if (key && valueArr.length) {
-      frontmatter[key.trim()] = valueArr.join(':').trim();
+  const lines = frontmatterString.split('\n');
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    // Skip empty lines
+    if (!line.trim()) continue;
+    
+    // Look for key: value pattern
+    const colonIndex = line.indexOf(':');
+    if (colonIndex === -1) continue;
+    
+    const key = line.slice(0, colonIndex).trim();
+    let value = line.slice(colonIndex + 1).trim();
+    
+    // Handle array (format: authors: ['value1', 'value2'])
+    if (value.startsWith('[') && value.endsWith(']')) {
+      try {
+        // Replace single quotes with double quotes for JSON parsing
+        const jsonValue = value.replace(/'/g, '"');
+        value = JSON.parse(jsonValue);
+      } catch (e) {
+        console.error(`Failed to parse array for ${key}:`, e);
+      }
     }
-  });
+    
+    // Handle multi-line array (format: authors:\n  - value1\n  - value2)
+    else if (value === '' && i + 1 < lines.length && lines[i + 1].trim().startsWith('-')) {
+      const arrayValues = [];
+      i++;
+      
+      while (i < lines.length && lines[i].trim().startsWith('-')) {
+        arrayValues.push(lines[i].trim().substring(1).trim());
+        i++;
+      }
+      
+      if (arrayValues.length > 0) {
+        value = arrayValues;
+        i--; // Adjust index since we'll increment in the loop
+      }
+    }
+    
+    frontmatter[key] = value;
+  }
   
   return { frontmatter, content: remainingContent };
 }

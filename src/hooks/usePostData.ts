@@ -43,6 +43,9 @@ export const usePostData = (category?: string, slug?: string) => {
         
         const { frontmatter, content } = extractFrontmatter(markdown);
         
+        console.log("Extracted frontmatter:", frontmatter);
+        console.log("Authors field type:", typeof frontmatter.authors, "value:", frontmatter.authors);
+        
         let abstract = "";
         
         if (frontmatter.abstract && frontmatter.abstract.length > 50) {
@@ -64,8 +67,18 @@ export const usePostData = (category?: string, slug?: string) => {
         let authorValue = "Unknown Author";
         if (frontmatter.author) {
           authorValue = frontmatter.author;
-        } else if (frontmatter.authors && Array.isArray(frontmatter.authors)) {
-          authorValue = frontmatter.authors.join(', ');
+          console.log("Using author field:", authorValue);
+        } else if (frontmatter.authors) {
+          console.log("Found authors field:", frontmatter.authors);
+          if (Array.isArray(frontmatter.authors)) {
+            authorValue = frontmatter.authors.join(', ');
+            console.log("Joined authors array:", authorValue);
+          } else if (typeof frontmatter.authors === 'string') {
+            authorValue = frontmatter.authors;
+            console.log("Using authors as string:", authorValue);
+          }
+        } else {
+          console.log("No author or authors field found in frontmatter");
         }
 
         setPost({
@@ -76,7 +89,7 @@ export const usePostData = (category?: string, slug?: string) => {
           abstract
         });
         setIsLoading(false);
-        console.log("Post loaded successfully");
+        console.log("Post loaded successfully with author:", authorValue);
       } catch (err) {
         console.error("Failed to load post:", err);
         setError("The post you're looking for doesn't exist.");

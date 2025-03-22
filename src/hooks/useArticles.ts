@@ -37,6 +37,7 @@ export const useArticles = () => {
           const slug = filename.replace(".md", "");
           
           const { frontmatter, content: postContent } = extractFrontmatter(content);
+          console.log(`Frontmatter for ${slug}:`, frontmatter);
           
           // Clean excerpt from markdown syntax
           let excerpt = frontmatter.excerpt || frontmatter.description || postContent.substring(0, 150) + "...";
@@ -46,8 +47,12 @@ export const useArticles = () => {
           let authorValue = "Unknown Author";
           if (frontmatter.author) {
             authorValue = frontmatter.author;
-          } else if (frontmatter.authors && Array.isArray(frontmatter.authors)) {
-            authorValue = frontmatter.authors.join(', ');
+          } else if (frontmatter.authors) {
+            if (Array.isArray(frontmatter.authors)) {
+              authorValue = frontmatter.authors.join(', ');
+            } else if (typeof frontmatter.authors === 'string') {
+              authorValue = frontmatter.authors;
+            }
           }
           
           return {
