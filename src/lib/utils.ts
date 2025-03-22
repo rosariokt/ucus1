@@ -27,6 +27,42 @@ export function slugify(text: string) {
     .replace(/-+$/, '');
 }
 
+/**
+ * Generates a fully accessible aria description for dates
+ * Complies with WCAG 2.1 SC 1.3.1 (Info and Relationships)
+ */
+export function accessibleDate(dateString: string, format: "long" | "short" = "long"): {
+  formatted: string;
+  iso: string;
+  ariaLabel: string;
+} {
+  const date = new Date(dateString);
+  
+  const formatted = format === "long" 
+    ? date.toLocaleDateString("en-US", { 
+        year: "numeric", 
+        month: "long", 
+        day: "numeric" 
+      })
+    : date.toLocaleDateString("en-US", { 
+        year: "numeric", 
+        month: "short", 
+        day: "numeric" 
+      });
+  
+  const iso = date.toISOString();
+  
+  // Create an accessible description for screen readers
+  const ariaLabel = date.toLocaleDateString("en-US", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric"
+  });
+  
+  return { formatted, iso, ariaLabel };
+}
+
 // This function helps extract frontmatter from markdown content
 export function extractFrontmatter(content: string) {
   const frontmatterRegex = /---\s*([\s\S]*?)\s*---/;
@@ -99,4 +135,49 @@ export function getCategoryColor(category: string): string {
   };
   
   return categoryColors[category] || categoryColors.default;
+}
+
+/**
+ * Check contrast ratio between two colors for WCAG compliance
+ * Returns true if the contrast ratio meets WCAG AA standards
+ */
+export function hasAdequateContrast(foreground: string, background: string): boolean {
+  // Convert hex colors to RGB
+  const hexToRgb = (hex: string): number[] => {
+    const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+    const fullHex = hex.replace(shorthandRegex, (_, r, g, b) => r + r + g + g + b + b);
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(fullHex);
+    
+    return result 
+      ? [
+          parseInt(result[1], 16),
+          parseInt(result[2], 16),
+          parseInt(result[3], 16)
+        ] 
+      : [0, 0, 0];
+  };
+  
+  // Calculate luminance
+  const luminance = (rgb: number[]): number => {
+    const [r, g, b] = rgb.map(v => {
+      const val = v / 255;
+      return val <= 0.03928 ? val / 12.92 : Math.pow((val + 0.055) / 1.055, 2.4);
+    });
+    
+    return r * 0.2126 + g * 0.7152 + b * 0.0722;
+  };
+  
+  const rgbForeground = hexToRgb(foreground);
+  const rgbBackground = hexToRgb(background);
+  
+  const l1 = luminance(rgbForeground);
+  const l2 = luminance(rgbBackground);
+  
+  // Calculate contrast ratio
+  const ratio = l1 > l2 
+    ? (l1 + 0.05) / (l2 + 0.05) 
+    : (l2 + 0.05) / (l1 + 0.05);
+  
+  // WCAG AA requires a contrast ratio of at least 4.5:1 for normal text
+  return ratio >= 4.5;
 }

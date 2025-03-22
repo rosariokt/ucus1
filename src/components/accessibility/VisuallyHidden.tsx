@@ -10,6 +10,7 @@ interface VisuallyHiddenProps {
 
 /**
  * Component that hides content visually but keeps it accessible to screen readers
+ * Following WCAG standards for screen reader accessibility
  */
 const VisuallyHidden = ({ 
   children, 
@@ -20,10 +21,16 @@ const VisuallyHidden = ({
   return (
     <Component
       className={cn(
-        "absolute w-px h-px p-0 overflow-hidden whitespace-nowrap border-0",
-        "clip-rect-0 not-sr-only",
+        "absolute w-1 h-1 p-0 -m-1 overflow-hidden",
+        "clip-path-inset-50 whitespace-nowrap",
         className
       )}
+      style={{
+        clip: "rect(0, 0, 0, 0)",
+        clipPath: "inset(50%)",
+        whiteSpace: "nowrap",
+        border: 0
+      }}
       {...props}
     >
       {children}
