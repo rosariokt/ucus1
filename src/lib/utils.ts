@@ -65,7 +65,7 @@ export function extractFrontmatter(content: string) {
     
     // Handle multi-line array (format: authors:\n  - value1\n  - value2)
     else if (value === '' && i + 1 < lines.length && lines[i + 1].trim().startsWith('-')) {
-      const arrayValues = [];
+      const arrayValues: string[] = [];
       i++;
       
       while (i < lines.length && lines[i].trim().startsWith('-')) {
