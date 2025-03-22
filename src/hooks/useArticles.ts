@@ -42,13 +42,21 @@ export const useArticles = () => {
           let excerpt = frontmatter.excerpt || frontmatter.description || postContent.substring(0, 150) + "...";
           excerpt = cleanExcerpt(excerpt);
           
+          // Process author field - check for both author and authors (array)
+          let authorValue = "Unknown Author";
+          if (frontmatter.author) {
+            authorValue = frontmatter.author;
+          } else if (frontmatter.authors && Array.isArray(frontmatter.authors)) {
+            authorValue = frontmatter.authors.join(', ');
+          }
+          
           return {
             title: frontmatter.title || slug.replace(/-/g, " "),
             date: frontmatter.date || new Date().toISOString().split("T")[0],
             excerpt,
             slug,
             category,
-            author: frontmatter.author || "Unknown Author"
+            author: authorValue
           };
         });
         

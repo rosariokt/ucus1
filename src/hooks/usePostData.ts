@@ -60,12 +60,12 @@ export const usePostData = (category?: string, slug?: string) => {
           }
         }
 
-        // Process author field - it can be either a string or already an array
-        let authorValue = frontmatter.author || "Unknown Author";
-        
-        // If the author is a string containing commas, consider it as multiple authors
-        if (typeof authorValue === 'string' && authorValue.includes(',')) {
-          authorValue = authorValue.trim();
+        // Process author field - check for both author and authors (array)
+        let authorValue = "Unknown Author";
+        if (frontmatter.author) {
+          authorValue = frontmatter.author;
+        } else if (frontmatter.authors && Array.isArray(frontmatter.authors)) {
+          authorValue = frontmatter.authors.join(', ');
         }
 
         setPost({
