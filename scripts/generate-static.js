@@ -28,6 +28,7 @@ const routes = [
   '/ach/full-72092',
   '/ach/full-77956',
   '/ach/full-111112',
+  '/ach/full-122593',
   '/404'
 ];
 
@@ -104,6 +105,10 @@ async function generateStaticPages() {
     fs.writeFileSync(outputPath, html);
     console.log(`Generated: ${outputPath}`);
   }
+  
+  // Tambahkan file .nojekyll untuk GitHub Pages
+  fs.writeFileSync(path.resolve(distPath, '.nojekyll'), '');
+  console.log('Created .nojekyll file for GitHub Pages');
   
   console.log('Static site generation completed!');
 }

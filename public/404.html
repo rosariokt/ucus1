@@ -6,9 +6,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Halaman tidak ditemukan | Jurnal Harian Regional</title>
   <script>
-    // Redirect ke SPA dengan menyimpan path asli
-    sessionStorage.setItem('redirectPath', window.location.pathname);
-    window.location.href = '/';
+    // Simpan jalur asli dan redirect ke root
+    // Ini bekerja dengan GitHub Pages
+    var pathSegmentsToKeep = 0;
+    var l = window.location;
+    var segments = l.pathname.split('/').filter(s => s.length > 0);
+    
+    // Abaikan segmen pertama jika ini adalah nama repositori GitHub
+    if (pathSegmentsToKeep > 0) {
+      segments = segments.slice(pathSegmentsToKeep);
+    }
+    
+    var redirectPath = segments.join('/');
+    
+    // Simpan jalur di sessionStorage
+    sessionStorage.setItem('redirectPath', '/' + redirectPath);
+    
+    // Redirect ke halaman utama
+    l.replace(
+      l.protocol + '//' + l.hostname + 
+      (l.port ? ':' + l.port : '') +
+      l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + 
+      '/?/' + redirectPath +
+      l.search
+    );
   </script>
 </head>
 <body>

@@ -6,6 +6,7 @@ interface SemanticContainerProps {
   as?: "main" | "section" | "article" | "aside" | "nav" | "header" | "footer";
   id?: string;
   label?: string;
+  role?: "banner" | "contentinfo" | "complementary" | "form" | "main" | "navigation" | "region" | "search";
   children: React.ReactNode;
   className?: string;
 }
@@ -18,6 +19,7 @@ const SemanticContainer: React.FC<SemanticContainerProps> = ({
   as: Component = "section",
   id,
   label,
+  role,
   children,
   className,
 }) => {
@@ -29,6 +31,7 @@ const SemanticContainer: React.FC<SemanticContainerProps> = ({
     <Component
       id={id}
       className={cn("w-full", className)}
+      role={role}
       {...ariaAttributes}
     >
       {children}
