@@ -50,7 +50,7 @@ export function extractFrontmatter(content: string) {
     if (colonIndex === -1) continue;
     
     const key = line.slice(0, colonIndex).trim();
-    let value = line.slice(colonIndex + 1).trim();
+    let value: string | string[] = line.slice(colonIndex + 1).trim();
     
     // Handle array (format: authors: ['value1', 'value2'])
     if (value.startsWith('[') && value.endsWith(']')) {
@@ -74,7 +74,7 @@ export function extractFrontmatter(content: string) {
       }
       
       if (arrayValues.length > 0) {
-        value = arrayValues;
+        value = arrayValues; // Assign the array to value (which is now correctly typed as string | string[])
         i--; // Adjust index since we'll increment in the loop
       }
     }
