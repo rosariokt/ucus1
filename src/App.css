@@ -1,42 +1,37 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+
+/* App.css now imports from animations.css */
+@import './styles/animations.css';
+
+/* Custom animations for reading progress */
+.reading-progress-bar {
+  @apply transition-all duration-300 ease-out;
+  background-color: var(--progress-color, theme('colors.primary.DEFAULT'));
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* Better focus indicators for accessibility */
+:focus {
+  @apply outline-offset-2 outline-2 outline-primary;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+:focus:not(:focus-visible) {
+  @apply outline-none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+:focus-visible {
+  @apply outline-offset-2 outline-2 outline-primary;
 }
 
-.card {
-  padding: 2em;
+/* Improved color contrast for text */
+.text-muted-foreground {
+  color: hsl(240 10% 40%); /* Darker than default for better contrast */
 }
 
-.read-the-docs {
-  color: #888;
+/* Skip to content link for keyboard users */
+.skip-to-content {
+  @apply absolute bg-background text-primary px-4 py-2 z-[100] opacity-0 -top-10 left-4 rounded transition-all focus:opacity-100 focus:top-4;
+}
+
+/* Keyboard navigation indicators */
+[data-focus-visible-added] {
+  @apply ring-2 ring-primary ring-offset-2;
 }

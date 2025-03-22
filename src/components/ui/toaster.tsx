@@ -1,3 +1,4 @@
+
 import { useToast } from "@/hooks/use-toast"
 import {
   Toast,
@@ -9,6 +10,9 @@ import {
 } from "@/components/ui/toast"
 
 export function Toaster() {
+  // Skip entirely if not browser environment
+  if (typeof window === 'undefined') return null;
+  
   const { toasts } = useToast()
 
   return (

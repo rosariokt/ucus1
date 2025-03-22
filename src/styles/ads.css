@@ -1,0 +1,176 @@
+
+/* Ad Container Styles */
+.ad-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  border-radius: var(--radius);
+  margin: 1.5rem 0;
+  background-color: rgba(var(--card-rgb), 0.02);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Ad container label (displayed during development, removed in production) */
+.ad-container::before {
+  content: "Advertisement";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 9px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+  background-color: rgba(var(--card-rgb), 0.8);
+  padding: 1px 6px;
+  border-radius: 0 0 4px 4px;
+  z-index: 1;
+  opacity: 0.7;
+}
+
+/* Responsive ad sizing */
+@media (max-width: 640px) { /* Small devices */
+  .ad-container {
+    min-height: 250px;
+    min-width: 300px;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .ad-container[data-ad-format="horizontal"] {
+    height: 100px;
+    max-width: 100%;
+  }
+  
+  /* Enhanced mobile visibility */
+  .ad-container[data-position="sticky-bottom"] {
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    margin: 0;
+    z-index: 40;
+    border-top: 1px solid var(--border);
+    border-radius: 0;
+    background-color: var(--background);
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1023px) { /* Medium devices */
+  .ad-container {
+    min-height: 280px;
+    max-width: 100%;
+  }
+  
+  .ad-container[data-ad-format="horizontal"] {
+    height: 90px;
+    max-width: 728px;
+    width: 100%;
+  }
+}
+
+@media (min-width: 1024px) { /* Large devices */
+  .ad-container {
+    min-height: 280px;
+    max-width: 100%;
+  }
+  
+  .ad-container[data-ad-format="horizontal"] {
+    height: 90px;
+    max-width: 728px;
+    width: 100%;
+  }
+  
+  .ad-container[data-ad-format="vertical"] {
+    min-height: 600px;
+    max-width: 300px;
+    width: 100%;
+  }
+}
+
+/* Ad container hover effect for better engagement */
+.ad-container:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-color: var(--border);
+}
+
+/* Ad layout grid for article pages */
+.ad-layout-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* Fix for AdSense sticky ads */
+.ad-container.sticky {
+  position: sticky;
+  top: 20px;
+  z-index: 10;
+}
+
+/* Ensure ads don't overflow their containers */
+.adsbygoogle {
+  max-width: 100%;
+  overflow: hidden;
+}
+
+/* Article page specific ad container */
+.article-ad-container {
+  margin: 2rem 0;
+  padding: 0.5rem;
+  background-color: rgba(var(--card-rgb), 0.02);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+}
+
+/* Improve ad visibility on light backgrounds */
+.bg-background .ad-container,
+.bg-card .ad-container {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--border);
+}
+
+/* Position-specific styles */
+.ad-container[data-position="content-top"] {
+  margin-top: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.ad-container[data-position="content-middle"] {
+  margin: 2rem auto;
+}
+
+.ad-container[data-position="content-bottom"] {
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.ad-container[data-position="in-feed"] {
+  margin: 1.5rem auto;
+  border: 1px solid var(--border);
+  background-color: var(--card);
+}
+
+/* Make sticky sidebar ads more visually appealing */
+.ad-container[data-position="sticky-sidebar"] {
+  margin-top: 1rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--border);
+  background-color: var(--card);
+}
+
+/* Animation for ad loading */
+@keyframes adFadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.ad-container {
+  animation: adFadeIn 0.5s ease-out forwards;
+}

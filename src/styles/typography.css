@@ -1,0 +1,164 @@
+
+/* Academic-specific styling */
+.font-serif {
+  font-family: 'Playfair Display', 'Source Serif 4', Georgia, serif;
+}
+
+.font-sans {
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* Improved typography hierarchy */
+h1.article-title {
+  font-size: 30px; /* Reduced from larger size */
+  line-height: 1.3;
+  font-weight: 600; /* Less bold */
+  letter-spacing: -0.01em;
+}
+
+h2.article-section {
+  font-size: 24px;
+  line-height: 1.4;
+  font-weight: 600;
+}
+
+h3.article-subsection {
+  font-size: 20px;
+  line-height: 1.4;
+  font-weight: 500; /* Medium weight */
+}
+
+.article-metadata {
+  font-size: 14px;
+  color: hsl(var(--muted-foreground));
+  font-weight: 400;
+}
+
+.doi-link {
+  font-family: 'Inter', system-ui, monospace;
+  font-size: 14px;
+  letter-spacing: -0.01em;
+  color: #0056b3; /* Darker blue for better contrast */
+  transition: color 0.2s ease;
+}
+
+.doi-link:hover {
+  color: #003d7a;
+  text-decoration: underline;
+}
+
+/* Academic-specific animation */
+@keyframes highlight {
+  0% {
+    background-position: left bottom;
+  }
+  100% {
+    background-position: right bottom;
+  }
+}
+
+.citation-hover {
+  display: inline;
+  background-image: linear-gradient(to right, transparent 50%, rgba(var(--primary), 0.1) 50%);
+  background-position: left bottom;
+  background-size: 200% 100%;
+  transition: background-position 0.5s ease-out;
+}
+
+.citation-hover:hover {
+  background-position: right bottom;
+}
+
+/* Academic link styling */
+.academic-link {
+  position: relative;
+  white-space: nowrap;
+  color: #0056b3; /* Darker blue for better contrast */
+}
+
+.academic-link::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  bottom: 0;
+  left: 0;
+  background-color: #0056b3; /* Match link color */
+  transform: scaleX(0);
+  transform-origin: bottom right;
+  transition: transform 0.3s ease-out;
+}
+
+.academic-link:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+/* Citation box styling */
+.citation-box {
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+  padding: 1rem;
+  margin: 1rem 0;
+  font-size: 14px;
+  position: relative;
+}
+
+.citation-content {
+  font-family: 'Inter', system-ui, monospace;
+  color: #495057;
+  line-height: 1.5;
+}
+
+/* Copy button styling */
+.copy-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 12px;
+  color: #495057;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.copy-button:hover {
+  background-color: #e9ecef;
+  color: #212529;
+}
+
+/* Action button styling for citation and downloads */
+.action-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #edf2f7;
+  color: #0056b3;
+  border: 1px solid #cbd5e0;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.action-button:hover {
+  background-color: #e2e8f0;
+  border-color: #a0aec0;
+}
+
+.action-button.primary {
+  background-color: #0056b3;
+  color: white;
+  border-color: #0056b3;
+}
+
+.action-button.primary:hover {
+  background-color: #003d7a;
+  border-color: #003d7a;
+}

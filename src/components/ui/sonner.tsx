@@ -1,9 +1,13 @@
+
 import { useTheme } from "next-themes"
 import { Toaster as Sonner } from "sonner"
 
 type ToasterProps = React.ComponentProps<typeof Sonner>
 
 const Toaster = ({ ...props }: ToasterProps) => {
+  // Skip entirely if not in browser environment
+  if (typeof window === 'undefined') return null;
+  
   const { theme = "system" } = useTheme()
 
   return (
